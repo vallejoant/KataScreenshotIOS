@@ -20,9 +20,91 @@ class SuperHeroesViewControllerTests: ScreenshotTest {
 
         verify(viewController: viewController)
     }
+    
+    func testShowsSuperHeroesListWhenThereAreSomeSuperHeroes() {
+        _ = givenThereAreSomeSuperHeroes()
+        
+        let viewController = getSuperHeroViewController()
+        
+        verify(viewController: viewController)
+    }
+    
+    func testShowsAvengersListWhenThereAreSomeAvengers() {
+        _ = givenThereAreSomeAvengers()
+        
+        let viewController = getSuperHeroViewController()
+        
+        verify(viewController: viewController)
+    }
+    
+    func testShowsOneSuperHeroWhenThereAreOnlyOneSuperHero() {
+        _ = givenThereAreSomeSuperHeroes(1)
+        
+        let viewController = getSuperHeroViewController()
+        
+        verify(viewController: viewController)
+    }
+    
+    func testShowsOneAvengerWhenThereAreOnlyOneAvenger() {
+        _ = givenThereAreSomeAvengers(1)
+        
+        let viewController = getSuperHeroViewController()
+        
+        verify(viewController: viewController)
+    }
+    
+    func testShowsLongNameWhenThereAreOneLongNamedSuperHero() {
+        _ = givenThereAreANamedSuperHero("SuperHero SuperHero SuperHero SuperHero SuperHero SuperHero")
+        
+        let viewController = getSuperHeroViewController()
+        
+        verify(viewController: viewController)
+    }
+    
+    func testShowsLongNameWhenThereAreOneLongNamedAvenger() {
+        _ = givenThereAreANamedSuperHero("SuperHero SuperHero SuperHero SuperHero SuperHero SuperHero", avenger: true)
+        
+        let viewController = getSuperHeroViewController()
+        
+        verify(viewController: viewController)
+    }
+    
+    func testShowsEmptyNameWhenThereAreOneEmptyNamedSuperHero() {
+        _ = givenThereAreANamedSuperHero()
+        
+        let viewController = getSuperHeroViewController()
+        
+        verify(viewController: viewController)
+    }
+    
+    func testShowsEmptyNameWhenThereAreOneEmptyNamedAvenger() {
+        _ = givenThereAreANamedSuperHero(avenger: true)
+        
+        let viewController = getSuperHeroViewController()
+        
+        verify(viewController: viewController)
+    }
+    
+    func testShowsSingleCharacterNameWhenThereAreOneSingleCharacterNamedSuperHero() {
+        _ = givenThereAreANamedSuperHero("S")
+        
+        let viewController = getSuperHeroViewController()
+        
+        verify(viewController: viewController)
+    }
+    
+    func testShowsSingleCharacterNameWhenThereAreOneSingleCharacterNamedAvenger() {
+        _ = givenThereAreANamedSuperHero("S", avenger: true)
+        
+        let viewController = getSuperHeroViewController()
+        
+        verify(viewController: viewController)
+    }
 
-    fileprivate func givenThereAreSomeAvengers() -> [SuperHero] {
-        return givenThereAreSomeSuperHeroes(avengers: true)
+// MARK: Utilities
+    
+    fileprivate func givenThereAreSomeAvengers(_ numberOfAvengers: Int = 10) -> [SuperHero] {
+        return givenThereAreSomeSuperHeroes(numberOfAvengers, avengers: true)
     }
 
     fileprivate func givenThereAreNoSuperHeroes() {
@@ -38,6 +120,18 @@ class SuperHeroesViewControllerTests: ScreenshotTest {
                 isAvenger: avengers, description: "Description - \(i)")
             superHeroes.append(superHero)
         }
+        repository.superHeroes = superHeroes
+        return superHeroes
+    }
+    
+    fileprivate func givenThereAreANamedSuperHero(_ name: String = "",
+                                                  avenger: Bool = false) -> [SuperHero] {
+        var superHeroes = [SuperHero]()
+        let superHero = SuperHero(name: name,
+            photo: URL(string: ""),
+            isAvenger: avenger, description: "Description")
+        superHeroes.append(superHero)
+
         repository.superHeroes = superHeroes
         return superHeroes
     }
